@@ -1,0 +1,8 @@
+settings:
+  nether-enabled: false
+  end-enabled: false
+world-settings:
+  default:
+    view-distance: 6
+    simulation-distance: 4
+    mob-spawn-range: 3
