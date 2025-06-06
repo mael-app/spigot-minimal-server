@@ -2,8 +2,8 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [master]
-    tags: ["v*"]
+    branches: [ master ]
+    tags: [ "v*" ]
 
 jobs:
   build-and-push:
@@ -30,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/mael-app/spigot-minimal-server
 
       - name: Build and push Docker image (multi-arch)
         uses: docker/build-push-action@v5
@@ -39,6 +39,9 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:1.21.5
+            ghcr.io/mael-app/spigot-minimal-server:latest
+            ghcr.io/mael-app/spigot-minimal-server:${{ github.ref_name }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Check image list (debug)
+        run: docker images
