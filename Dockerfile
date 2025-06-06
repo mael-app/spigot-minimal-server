@@ -1,5 +1,9 @@
 FROM openjdk:21-jdk-slim
 
+LABEL org.opencontainers.image.source="https://github.com/mael-app/spigot-minimal-server"
+LABEL org.opencontainers.image.description="A minimal Spigot Minecraft server packaged with Docker"
+LABEL org.opencontainers.image.licenses="MIT"
+
 WORKDIR /server
 
 COPY spigot-1.21.5.jar /server/server.jar

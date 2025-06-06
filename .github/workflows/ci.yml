@@ -30,7 +30,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/mael-app/spigot-minimal-server
+          images: ghcr.io/${{ github.repository }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/mael-app/spigot-minimal-server
+            org.opencontainers.image.description=A minimal Spigot Minecraft server packaged with Docker
+            org.opencontainers.image.licenses=MIT
 
       - name: Build and push Docker image (multi-arch)
         uses: docker/build-push-action@v5
