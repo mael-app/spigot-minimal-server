@@ -1,30 +1,13 @@
-FROM openjdk:21-slim AS builder
+FROM openjdk:21-jdk-slim
 
-WORKDIR /build
+WORKDIR /server
 
-RUN apt-get update && \
-    apt-get install -y git curl && \
-    curl -o BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+COPY spigot-1.21.5.jar /server/server.jar
+COPY server.properties bukkit.yml spigot.yml /server/
+COPY world /server/world
 
-RUN git config --global --unset core.autocrlf || true
-
-ARG VERSION=1.21.5
-RUN java -jar BuildTools.jar --rev ${VERSION}
-
-FROM openjdk:21-slim
-
-ENV SERVER_DIR=/server
-WORKDIR ${SERVER_DIR}
-
-COPY --from=builder /build/spigot-1.21.5.jar ${SERVER_DIR}/spigot.jar
-COPY start.sh .
-COPY bukkit.yml .
-COPY spigot.yml .
-
-COPY world/ ./world/
-
-RUN chmod +x start.sh && echo "eula=true" > eula.txt
+RUN echo "eula=true" > eula.txt
 
 EXPOSE 25565
 
-CMD ["./start.sh"]
+CMD ["java", "-Xms1G", "-Xmx2G", "-jar", "server.jar", "nogui"]
